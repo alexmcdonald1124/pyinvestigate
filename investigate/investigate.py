@@ -49,7 +49,8 @@ class Investigate(object):
             "sample_connections":   "sample/{}/connections",
             "sample_samples":       "sample/{}/samples",
             "as_for_ip":            "bgp_routes/ip/{}/as_for_ip.json",
-            "prefixes_for_asn":     "bgp_routes/asn/{}/prefixes_for_asn.json"
+            "prefixes_for_asn":     "bgp_routes/asn/{}/prefixes_for_asn.json",
+            "domain_score":         "domains/score/{}"
         }
         self._auth_header = {"Authorization": "Bearer " + self.api_key}
 
@@ -311,6 +312,14 @@ class Investigate(object):
         '''Gets the AS information for a given ASN. Return the CIDR and geolocation associated with the AS.'''
 
         uri = self._uris["prefixes_for_asn"].format(asn)
+        resp_json = self.get_parse(uri)
+
+        return resp_json
+
+    def domain_score(self, domain):
+        '''Gets the domain score whether the domain has been flagged as malicious by Umbrella security researchers.'''
+
+        uri = self._uris["domain_score"].format(domain)
         resp_json = self.get_parse(uri)
 
         return resp_json
